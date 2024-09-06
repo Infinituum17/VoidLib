@@ -3,15 +3,14 @@
     "id": "void_lib",
     "version": "${version}",
     "name": "Void Lib",
-    "description": "This is an example description! Tell everyone what your mod is about!",
+    "description": "A lib that adds various utilities to mod development",
     "authors": [
-        "Me!"
+        "Infinituum"
     ],
     "contact": {
-        "homepage": "https://fabricmc.net/",
-        "sources": "https://github.com/FabricMC/fabric-example-mod"
+        "sources": "https://github.com/Infinituum17/VoidLib"
     },
-    "license": "CC0-1.0",
+    "license": "MIT",
     "icon": "assets/void_lib/icon.png",
     "environment": "*",
     "entrypoints": {
@@ -31,8 +30,5 @@
         "java": ">=17",
         "architectury": ">=9.2.14",
         "fabric-api": "*"
-    },
-    "suggests": {
-        "another-mod": "*"
     }
 }

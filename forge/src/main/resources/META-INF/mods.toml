@@ -11,7 +11,7 @@ authors = "Infinituum"
 description = '''
 A lib that adds various utilities to mod development
 '''
-#logoFile = ""
+logoFile = "assets/void_lib/icon.png"
 
 [[dependencies.void_lib]]
 modId = "forge"
