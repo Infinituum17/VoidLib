@@ -16,10 +16,10 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "infinituum.void_lib.fabric.ExampleModFabric"
+            "infinituum.void_lib.fabric.VoidLibFabric"
         ],
         "client": [
-            "infinituum.void_lib.fabric.client.ExampleModFabricClient"
+            "infinituum.void_lib.fabric.client.VoidLibFabricClient"
         ]
     },
     "mixins": [
