@@ -78,9 +78,9 @@ public final class ModAnnotationScanner {
                 .filter(modFile -> modFile
                         .getDependencies()
                         .stream()
-                        .anyMatch(dependency ->
-                                dependencyId.equals(dependency.getModId()))
-                        || dependencyId.equals(modFile.getModId()))
+                        .anyMatch(dependency -> dependencyId.equals(dependency.getModId()))
+                        || dependencyId.equals(modFile.getModId())
+                        || (FabricLoader.getInstance().isDevelopmentEnvironment() && modFile.getModId().isEmpty()))
                 .filter(modFile -> modFile
                         .getAnnotatedClasses()
                         .stream()

@@ -6,22 +6,35 @@ import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.metadata.ModDependency;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 public record ScannedModFile(ModContainer modContainer, Set<AnnotatedClass> classes) implements ScannedFile {
     @Override
     public String getModId() {
-        return modContainer.getMetadata().getId();
+        if (modContainer.getMetadata() != null) {
+            return modContainer.getMetadata().getId();
+        }
+
+        return "";
     }
 
     @Override
     public Collection<ModDependency> getDependencies() {
-        return modContainer.getMetadata().getDependencies();
+        if (modContainer.getMetadata() != null) {
+            return modContainer.getMetadata().getDependencies();
+        }
+
+        return List.of();
     }
 
     @Override
     public String getModDisplayName() {
-        return modContainer.getMetadata().getName();
+        if (modContainer.getMetadata() != null) {
+            return modContainer.getMetadata().getName();
+        }
+
+        return "";
     }
 
     @Override
