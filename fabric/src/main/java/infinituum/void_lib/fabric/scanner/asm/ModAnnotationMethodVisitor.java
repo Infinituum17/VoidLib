@@ -17,102 +17,78 @@ public final class ModAnnotationMethodVisitor extends MethodVisitor {
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitAnnotation(descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            ModAnnotation annotation = new ModAnnotation(annotationName);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        ModAnnotation annotation = new ModAnnotation(annotationName);
 
-            method.addAnnotation(annotation);
+        method.addAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override
     public AnnotationVisitor visitTypeAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitTypeAnnotation(typeRef, typePath, descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            MethodTypeAnnotation annotation = new MethodTypeAnnotation(annotationName, typeRef, typePath);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        MethodTypeAnnotation annotation = new MethodTypeAnnotation(annotationName, typeRef, typePath);
 
-            method.addTypeAnnotation(annotation);
+        method.addTypeAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override
     public AnnotationVisitor visitParameterAnnotation(int parameter, String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitParameterAnnotation(parameter, descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            MethodParameterAnnotation annotation = new MethodParameterAnnotation(annotationName, parameter);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        MethodParameterAnnotation annotation = new MethodParameterAnnotation(annotationName, parameter);
 
-            method.addParameterAnnotation(annotation);
+        method.addParameterAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override
     public AnnotationVisitor visitInsnAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitInsnAnnotation(typeRef, typePath, descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            MethodInstructionAnnotation annotation = new MethodInstructionAnnotation(annotationName, typeRef, typePath);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        MethodInstructionAnnotation annotation = new MethodInstructionAnnotation(annotationName, typeRef, typePath);
 
-            method.addInstructionAnnotation(annotation);
+        method.addInstructionAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override
     public AnnotationVisitor visitTryCatchAnnotation(int typeRef, TypePath typePath, String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitTryCatchAnnotation(typeRef, typePath, descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            MethodTryCatchAnnotation annotation = new MethodTryCatchAnnotation(annotationName, typeRef, typePath);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        MethodTryCatchAnnotation annotation = new MethodTryCatchAnnotation(annotationName, typeRef, typePath);
 
-            method.addTryCatchAnnotation(annotation);
+        method.addTryCatchAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override
     public AnnotationVisitor visitLocalVariableAnnotation(int typeRef, TypePath typePath, Label[] start, Label[] end, int[] index, String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitLocalVariableAnnotation(typeRef, typePath, start, end, index, descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            String annotationName = annotationType.getClassName();
-            MethodLocalVariableAnnotation annotation = new MethodLocalVariableAnnotation(annotationName, typeRef, typePath, start, end, index);
+        Type annotationType = Type.getType(descriptor);
+        String annotationName = annotationType.getClassName();
+        MethodLocalVariableAnnotation annotation = new MethodLocalVariableAnnotation(annotationName, typeRef, typePath, start, end, index);
 
-            method.addLocalVariableAnnotation(annotation);
+        method.addLocalVariableAnnotation(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override

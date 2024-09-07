@@ -4,6 +4,7 @@ import infinituum.void_lib.VoidLib;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedClass;
 import infinituum.void_lib.fabric.scanner.api.ScannedFile;
 import infinituum.void_lib.fabric.scanner.impl.ScannedModFile;
+import infinituum.void_lib.fabric.utils.DevModContainer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 
@@ -14,10 +15,12 @@ import java.util.*;
 
 public final class ModAnnotationScanner {
     private static ModAnnotationScanner INSTANCE;
+    private final Set<String> excludedMods;
     private final Set<ScannedFile> result;
 
     private ModAnnotationScanner() {
         Collection<ModContainer> loadedMods = FabricLoader.getInstance().getAllMods();
+        this.excludedMods = Set.of("java", "minecraft", "fabricloader", "mixinextras", "void_lib");
         this.result = scan(loadedMods);
     }
 
@@ -34,18 +37,56 @@ public final class ModAnnotationScanner {
     }
 
     private Set<ScannedFile> scan(Collection<ModContainer> mods) {
+        long startTime = System.currentTimeMillis();
+        VoidLib.LOGGER.info("Scanning jar files for annotations...");
         Set<ScannedFile> result = new HashSet<>();
 
         for (ModContainer mod : mods) {
-            Set<AnnotatedClass> classes = scanEntrypoints(mod.getRootPaths());
-            ScannedModFile file = new ScannedModFile(mod, classes);
+            String modId = mod.getMetadata().getId();
 
-            result.add(file);
+            if (!excludedMods.contains(modId)) {
+                Set<AnnotatedClass> classes = scanEntrypoints(mod.getRootPaths());
+
+                if (!classes.isEmpty()) {
+                    VoidLib.LOGGER.info("Found mod '{}' with {} annotated classes", modId, classes.size());
+                    result.add(new ScannedModFile(mod, classes));
+                }
+            }
 
             if (!mod.getContainedMods().isEmpty()) {
                 scan(mod.getContainedMods());
             }
         }
+
+        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
+            try {
+                Path developmentEntrypoint = FabricLoader.getInstance()
+                        .getGameDir()
+                        .getParent()
+                        .resolve("build")
+                        .resolve("classes")
+                        .resolve("java")
+                        .resolve("main");
+                try {
+                    List<Path> rootPaths = List.of(developmentEntrypoint);
+                    Set<AnnotatedClass> classes = scanEntrypoints(rootPaths);
+
+                    if (!classes.isEmpty()) {
+                        VoidLib.LOGGER.info("Found current DEV mod with {} annotated classes", classes.size());
+
+                        result.add(new ScannedModFile(new DevModContainer(rootPaths), classes));
+                    }
+                } catch (Exception e) {
+                    VoidLib.LOGGER.warn("Could not read 'build/main/java' directory in development environment. Searched path: {}", developmentEntrypoint);
+                }
+            } catch (Exception e) {
+                VoidLib.LOGGER.warn("Could not determine development entrypoint (should be 'build/main/java')");
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+
+        VoidLib.LOGGER.info("Scan completed in {} ms!", (endTime - startTime));
 
         return result;
     }

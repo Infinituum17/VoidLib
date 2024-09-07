@@ -16,16 +16,12 @@ public final class ModAnnotationClassVisitor extends ClassVisitor {
     public AnnotationVisitor visitAnnotation(String descriptor, boolean visible) {
         AnnotationVisitor nextVisitor = super.visitAnnotation(descriptor, visible);
 
-        if (visible) {
-            Type annotationType = Type.getType(descriptor);
-            ModAnnotation annotation = new ModAnnotation(annotationType.getClassName());
+        Type annotationType = Type.getType(descriptor);
+        ModAnnotation annotation = new ModAnnotation(annotationType.getClassName());
 
-            annotatedClass.add(annotation);
+        annotatedClass.add(annotation);
 
-            return new ModAnnotationVisitor(nextVisitor, annotation);
-        }
-
-        return nextVisitor;
+        return new ModAnnotationVisitor(nextVisitor, annotation);
     }
 
     @Override

@@ -7,7 +7,7 @@ import net.fabricmc.api.ModInitializer;
 public final class VoidLibFabric implements ModInitializer {
     @Override
     public void onInitialize() {
-        ModAnnotationScanner.init();
         VoidLib.init();
+        ModAnnotationScanner.init();
     }
 }
