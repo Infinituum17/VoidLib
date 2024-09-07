@@ -22,7 +22,7 @@ subprojects {
     apply plugin: 'java'
 
     base {
-        archivesName = "$rootProject.archives_name-$project.name"
+        archivesName = "$rootProject.archives_name"
     }
 
     repositories {
