@@ -7,6 +7,7 @@ import infinituum.void_lib.fabric.scanner.impl.ScannedModFile;
 import infinituum.void_lib.fabric.utils.DevModContainer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
+import net.fabricmc.loader.api.metadata.Person;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public final class ModAnnotationScanner {
     private volatile static ModAnnotationScanner INSTANCE;
     private final Set<String> excludedMods;
+    private final Set<String> excludedAuthors;
     private final Set<ScannedFile> result;
 
     private ModAnnotationScanner() {
         Collection<ModContainer> loadedMods = FabricLoader.getInstance().getAllMods();
         this.excludedMods = Set.of("java", "minecraft", "fabricloader", "mixinextras", "void_lib");
+        this.excludedAuthors = Set.of("FabricMC");
         this.result = scan(loadedMods);
     }
 
@@ -95,8 +98,14 @@ public final class ModAnnotationScanner {
 
         for (ModContainer mod : mods) {
             String modId = mod.getMetadata().getId();
+            Collection<Person> authors = mod.getMetadata().getAuthors();
 
-            if (!excludedMods.contains(modId)) {
+            boolean isExcludedMod = excludedMods.contains(modId);
+            boolean isExcludedAuthor = authors
+                    .stream()
+                    .anyMatch(person -> excludedAuthors.contains(person.getName()));
+
+            if (!isExcludedMod && !isExcludedAuthor) {
                 Set<AnnotatedClass> classes = scanEntrypoints(mod.getRootPaths());
 
                 if (!classes.isEmpty()) {
