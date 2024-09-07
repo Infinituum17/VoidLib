@@ -43,6 +43,7 @@ replay_*.log
 # other
 **/*.png
 **/.cache/
+**/logs
 
 .architectury-transformer/
 
