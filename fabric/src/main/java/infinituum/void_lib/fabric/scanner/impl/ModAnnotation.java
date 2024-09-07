@@ -30,7 +30,7 @@ public class ModAnnotation implements Annotation {
 
     @Override
     public boolean is(Class<?> clazz) {
-        return this.clazz.equals(clazz);
+        return clazz.equals(this.clazz);
     }
 
     @Override

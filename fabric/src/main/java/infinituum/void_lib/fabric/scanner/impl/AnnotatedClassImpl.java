@@ -74,7 +74,7 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
 
     @Override
     public boolean is(Class<?> clazz) {
-        return this.clazz.equals(clazz);
+        return clazz.equals(this.clazz);
     }
 
     @Override
