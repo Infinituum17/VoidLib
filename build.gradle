@@ -56,7 +56,7 @@ subprojects {
         it.options.release = 17
     }
 
-    if ((project.name == "fabric" /*|| project.name == "forge"*/) && project.version != "0.0.0") {
+    if ((project.name == "fabric" || project.name == "forge") && project.version != "0.0.0") {
         unifiedPublishing {
             project {
                 displayName = "Void Lib ${project.minecraft_version}-${project.name} - ${project.mod_version}"
