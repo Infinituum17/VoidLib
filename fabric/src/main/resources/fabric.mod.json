@@ -21,9 +21,6 @@
             "infinituum.void_lib.fabric.VoidLibFabric"
         ]
     },
-    "mixins": [
-        "void_lib.mixins.json"
-    ],
     "depends": {
         "fabricloader": ">=0.16.3",
         "minecraft": "~1.20.1",
