@@ -59,7 +59,7 @@ public final class ModAnnotationScanner {
                 .filter(modFile -> modFile
                         .getAnnotatedClasses()
                         .stream()
-                        .anyMatch(clazz -> clazz.contains(annotationClass)))
+                        .anyMatch(clazz -> clazz != null && clazz.contains(annotationClass)))
                 .collect(Collectors.toSet());
     }
 
@@ -78,10 +78,9 @@ public final class ModAnnotationScanner {
                 .filter(modFile -> modFile
                         .getDependencies()
                         .stream()
-                        .anyMatch(dependency -> dependency
-                                .getModId()
-                                .equals(dependencyId))
-                        || modFile.getModId().equals(dependencyId))
+                        .anyMatch(dependency ->
+                                dependencyId.equals(dependency.getModId()))
+                        || dependencyId.equals(modFile.getModId()))
                 .filter(modFile -> modFile
                         .getAnnotatedClasses()
                         .stream()

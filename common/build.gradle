@@ -8,3 +8,49 @@ dependencies {
     // Do NOT use other classes from Fabric Loader.
     modImplementation "net.fabricmc:fabric-loader:$rootProject.fabric_loader_version"
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = rootProject.maven_group
+            artifactId = rootProject.archives_name + "-" + project.name
+            version = rootProject.minecraft_version + "-" + rootProject.mod_version
+
+            pom {
+                name = "VoidLib [Common]"
+                description = "A lib that adds various utilities to mod development"
+                url = "https://github.com/Infinituum17/VoidLib"
+                scm {
+                    url = "https://github.com/Infinituum17/VoidLib"
+                    connection = "scm:git:git://github.com/Infinituum17/VoidLib.git"
+                    developerConnection = "scm:git:git@github.com:Infinituum17/VoidLib.git"
+                }
+                issueManagement {
+                    system = "github"
+                    url = "https://github.com/Infinituum17/VoidLib/issues"
+                }
+                licenses {
+                    license {
+                        name = "MIT"
+                        url = "https://spdx.org/licenses/MIT.html"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "infinituum17"
+                        name = "infinituum17"
+                    }
+                }
+            }
+
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            name = "InfinituumModResources"
+            url "file://" + System.getenv("MOD_RESOURCES").toString() + "/maven"
+        }
+    }
+}

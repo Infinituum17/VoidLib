@@ -16,6 +16,9 @@
     "entrypoints": {
         "main": [
             "infinituum.void_lib.fabric.VoidLibFabric"
+        ],
+        "preLaunch": [
+            "infinituum.void_lib.fabric.VoidLibFabric"
         ]
     },
     "mixins": [
