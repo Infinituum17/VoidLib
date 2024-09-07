@@ -58,30 +58,34 @@ public final class ModAnnotationScanner {
             }
         }
 
-        if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
-            try {
-                Path developmentEntrypoint = FabricLoader.getInstance()
-                        .getGameDir()
-                        .getParent()
-                        .resolve("build")
-                        .resolve("classes")
-                        .resolve("java")
-                        .resolve("main");
+        try {
+            if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
                 try {
-                    List<Path> rootPaths = List.of(developmentEntrypoint);
-                    Set<AnnotatedClass> classes = scanEntrypoints(rootPaths);
+                    Path developmentEntrypoint = FabricLoader.getInstance()
+                            .getGameDir()
+                            .getParent()
+                            .resolve("build")
+                            .resolve("classes")
+                            .resolve("java")
+                            .resolve("main");
+                    try {
+                        List<Path> rootPaths = List.of(developmentEntrypoint);
+                        Set<AnnotatedClass> classes = scanEntrypoints(rootPaths);
 
-                    if (!classes.isEmpty()) {
-                        VoidLib.LOGGER.info("Found current DEV mod with {} annotated classes", classes.size());
+                        if (!classes.isEmpty()) {
+                            VoidLib.LOGGER.info("Found current DEV mod with {} annotated classes", classes.size());
 
-                        result.add(new ScannedModFile(new DevModContainer(rootPaths), classes));
+                            result.add(new ScannedModFile(new DevModContainer(rootPaths), classes));
+                        }
+                    } catch (Exception e) {
+                        VoidLib.LOGGER.warn("Could not read 'build/main/java' directory in development environment. Searched path: {}", developmentEntrypoint);
                     }
                 } catch (Exception e) {
-                    VoidLib.LOGGER.warn("Could not read 'build/main/java' directory in development environment. Searched path: {}", developmentEntrypoint);
+                    VoidLib.LOGGER.warn("Could not determine development entrypoint (should be 'build/main/java')");
                 }
-            } catch (Exception e) {
-                VoidLib.LOGGER.warn("Could not determine development entrypoint (should be 'build/main/java')");
             }
+        } catch (Exception e) {
+            VoidLib.LOGGER.warn("Could not read developed mod's classes. Ignore this message if you're running tests");
         }
 
         long endTime = System.currentTimeMillis();
@@ -95,12 +99,22 @@ public final class ModAnnotationScanner {
         Set<AnnotatedClass> annotatedClasses = new HashSet<>();
 
         for (Path entrypoint : entrypoints) {
-            ModAnnotationFileTreeVisitor visitor = new ModAnnotationFileTreeVisitor(entrypoint);
-
-            annotatedClasses.addAll(scanAnnotations(visitor));
+            annotatedClasses.addAll(scanEntrypoint(entrypoint));
         }
 
         return Collections.unmodifiableSet(annotatedClasses);
+    }
+
+    /**
+     * Manually scan a directory
+     *
+     * @param entrypoint Path to the directory to scan
+     * @return The list of annotated classes (see {@link AnnotatedClass})
+     */
+    public Set<AnnotatedClass> scanEntrypoint(Path entrypoint) {
+        ModAnnotationFileTreeVisitor visitor = new ModAnnotationFileTreeVisitor(entrypoint);
+
+        return scanAnnotations(visitor);
     }
 
     private Set<AnnotatedClass> scanAnnotations(ModAnnotationFileTreeVisitor visitor) {
