@@ -16,9 +16,6 @@
     "entrypoints": {
         "main": [
             "infinituum.void_lib.fabric.VoidLibFabric"
-        ],
-        "client": [
-            "infinituum.void_lib.fabric.client.VoidLibFabricClient"
         ]
     },
     "mixins": [
@@ -27,8 +24,6 @@
     "depends": {
         "fabricloader": ">=0.16.3",
         "minecraft": "~1.20.1",
-        "java": ">=17",
-        "architectury": ">=9.2.14",
-        "fabric-api": "*"
+        "java": ">=17"
     }
 }
