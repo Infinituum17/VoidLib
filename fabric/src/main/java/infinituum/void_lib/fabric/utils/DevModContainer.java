@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-public class DevModContainer implements ModContainer {
+public final class DevModContainer implements ModContainer {
     private final List<Path> rootPaths;
 
     public DevModContainer(List<Path> rootPaths) {
