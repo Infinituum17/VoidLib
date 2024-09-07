@@ -9,6 +9,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Utility class ONLY used in development environments
+ * <p>
+ * <b>NOTE</b>: Every method of this class returns an empty value / null except {@link DevModContainer#getRootPaths()}
+ */
 public final class DevModContainer implements ModContainer {
     private final List<Path> rootPaths;
 

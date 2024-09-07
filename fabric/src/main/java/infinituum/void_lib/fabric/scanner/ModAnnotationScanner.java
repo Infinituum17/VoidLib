@@ -24,6 +24,11 @@ public final class ModAnnotationScanner {
         this.result = scan(loadedMods);
     }
 
+    /**
+     * Creates (if it doesn't exist) and returns an instance of {@link ModAnnotationScanner}
+     *
+     * @return An instance (singleton) of {@link ModAnnotationScanner}
+     */
     public static ModAnnotationScanner init() {
         if (INSTANCE == null) {
             INSTANCE = new ModAnnotationScanner();
@@ -32,6 +37,11 @@ public final class ModAnnotationScanner {
         return INSTANCE;
     }
 
+    /**
+     * Returns the list of {@link ScannedFile ScannedFiles}
+     *
+     * @return The list of {@link ScannedFile ScannedFiles}
+     */
     public Set<ScannedFile> get() {
         return result;
     }
