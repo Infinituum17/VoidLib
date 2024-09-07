@@ -2,12 +2,6 @@ plugins {
     id 'com.github.johnrengelman.shadow'
 }
 
-loom {
-    forge {
-        mixinConfig "void_lib.mixins.json"
-    }
-}
-
 architectury {
     platformSetupLoomIde()
     forge()
