@@ -44,6 +44,17 @@ public final class AnnotatedFieldImpl implements AnnotatedField {
     }
 
     @Override
+    public boolean contains(Class<?> annotationClass) {
+        if (!hasAnnotations()) {
+            return false;
+        }
+
+        return this.fieldAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
     public List<Annotation> getAnnotations() {
         return fieldAnnotations;
     }

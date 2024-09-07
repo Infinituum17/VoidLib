@@ -47,6 +47,14 @@ public interface AnnotatedClass extends AnnotatedElement {
     boolean hasClassAnnotations();
 
     /**
+     * Checks if the current class annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsClassAnnotation(Class<?> annotationClass);
+
+    /**
      * Checks if this {@link AnnotatedClass} has field-level annotations
      *
      * @return {@code true} if the class has one or more field-level annotations, {@code false} otherwise
@@ -54,9 +62,25 @@ public interface AnnotatedClass extends AnnotatedElement {
     boolean hasFieldAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedClass} has method-level annotations
+     * Checks if the current field annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsFieldAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedClass} has method-level annotations
      *
      * @return {@code true} if the class has one or more method-level annotations, {@code false} otherwise
      */
     boolean hasMethodAnnotations();
+
+    /**
+     * Checks if the current method annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsMethodAnnotation(Class<?> annotationClass);
 }

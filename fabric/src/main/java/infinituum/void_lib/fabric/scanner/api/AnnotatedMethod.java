@@ -59,44 +59,92 @@ public interface AnnotatedMethod extends AnnotatedElement {
     List<LocalVariableAnnotation> getLocalVariableAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some annotations
+     * Checks if the current {@link AnnotatedMethod} has some annotations
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some {@link TypeAnnotation}s
+     * Checks if the current {@link AnnotatedMethod} has some {@link TypeAnnotation}s
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasTypeAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some {@link TryCatchAnnotation}s
+     * Checks if the current {@link AnnotatedMethod} has some {@link TryCatchAnnotation}s
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasTryCatchAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some {@link ParameterAnnotation}
+     * Checks if the current {@link AnnotatedMethod} has some {@link ParameterAnnotation}
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasParameterAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some {@link InstructionAnnotation}
+     * Checks if the current {@link AnnotatedMethod} has some {@link InstructionAnnotation}
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasInstructionAnnotations();
 
     /**
-     * Checks if this {@link AnnotatedMethod} has some {@link LocalVariableAnnotation}
+     * Checks if the current {@link AnnotatedMethod} has some {@link LocalVariableAnnotation}
      *
      * @return {@code true} if the {@link AnnotatedMethod} contains one or more annotations, {@code false} otherwise
      */
     boolean hasLocalVariableAnnotations();
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s method annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s type annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsTypeAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s parameter annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsParameterAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s instruction annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsInstructionAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s try-catch annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsTryCatchAnnotation(Class<?> annotationClass);
+
+    /**
+     * Checks if the current {@link AnnotatedMethod}'s local-variable annotations contain one annotation of the type passed in
+     *
+     * @param annotationClass The annotation class
+     * @return {@code true} if it contains at least one annotation of the type passed in, {@code false} otherwise
+     */
+    boolean containsLocalVariableAnnotation(Class<?> annotationClass);
 }

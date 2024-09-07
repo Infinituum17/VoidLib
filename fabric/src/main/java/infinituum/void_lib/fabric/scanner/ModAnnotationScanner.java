@@ -12,9 +12,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public final class ModAnnotationScanner {
-    private static ModAnnotationScanner INSTANCE;
+    private volatile static ModAnnotationScanner INSTANCE;
     private final Set<String> excludedMods;
     private final Set<ScannedFile> result;
 
@@ -44,6 +45,48 @@ public final class ModAnnotationScanner {
      */
     public Set<ScannedFile> get() {
         return result;
+    }
+
+    /**
+     * Returns the list of {@link ScannedFile ScannedFilees} that have the annotation passed in
+     *
+     * @param annotationClass The annotation to search for
+     * @return The list of {@link ScannedFile ScannedFiles}
+     */
+    public Set<ScannedFile> search(Class<?> annotationClass) {
+        return this.get()
+                .stream()
+                .filter(modFile -> modFile
+                        .getAnnotatedClasses()
+                        .stream()
+                        .anyMatch(clazz -> clazz.contains(annotationClass)))
+                .collect(Collectors.toSet());
+    }
+
+    /**
+     * Returns the list of {@link ScannedFile ScannedFiles} that have the annotation and depend on the id passed in
+     * <p>
+     * <b>NOTE</b>: if the scanned file's mod-id is equal to the id passed in, the file is automatically included
+     *
+     * @param annotationClass The annotation to search for
+     * @param dependencyId    The dependency mod-id
+     * @return The list of {@link ScannedFile ScannedFiles}
+     */
+    public Set<ScannedFile> search(Class<?> annotationClass, String dependencyId) {
+        return this.get()
+                .stream()
+                .filter(modFile -> modFile
+                        .getDependencies()
+                        .stream()
+                        .anyMatch(dependency -> dependency
+                                .getModId()
+                                .equals(dependencyId))
+                        || modFile.getModId().equals(dependencyId))
+                .filter(modFile -> modFile
+                        .getAnnotatedClasses()
+                        .stream()
+                        .anyMatch(clazz -> clazz.contains(annotationClass)))
+                .collect(Collectors.toSet());
     }
 
     private Set<ScannedFile> scan(Collection<ModContainer> mods) {

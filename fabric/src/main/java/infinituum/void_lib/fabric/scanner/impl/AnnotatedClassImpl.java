@@ -51,6 +51,13 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
     }
 
     @Override
+    public boolean contains(Class<?> annotationClass) {
+        return containsClassAnnotation(annotationClass)
+                || containsFieldAnnotation(annotationClass)
+                || containsMethodAnnotation(annotationClass);
+    }
+
+    @Override
     public Set<AnnotatedField> getAnnotatedFields() {
         return annotatedFields;
     }
@@ -76,13 +83,46 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
     }
 
     @Override
+    public boolean containsClassAnnotation(Class<?> annotationClass) {
+        if (!hasClassAnnotations()) {
+            return false;
+        }
+
+        return this.classAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
     public boolean hasFieldAnnotations() {
         return !this.annotatedFields.isEmpty();
     }
 
     @Override
+    public boolean containsFieldAnnotation(Class<?> annotationClass) {
+        if (!hasFieldAnnotations()) {
+            return false;
+        }
+
+        return this.annotatedFields
+                .stream()
+                .anyMatch(annotatedField -> annotatedField.contains(annotationClass));
+    }
+
+    @Override
     public boolean hasMethodAnnotations() {
         return !this.annotatedMethods.isEmpty();
+    }
+
+    @Override
+    public boolean containsMethodAnnotation(Class<?> annotationClass) {
+        if (!hasMethodAnnotations()) {
+            return false;
+        }
+
+        return this.annotatedMethods
+                .stream()
+                .anyMatch(annotatedMethod -> annotatedMethod.contains(annotationClass));
     }
 
     @Override

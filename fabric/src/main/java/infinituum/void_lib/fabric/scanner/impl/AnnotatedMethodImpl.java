@@ -69,6 +69,11 @@ public final class AnnotatedMethodImpl implements AnnotatedMethod {
     }
 
     @Override
+    public List<Annotation> getAnnotations() {
+        return methodAnnotations;
+    }
+
+    @Override
     public List<TypeAnnotation> getTypeAnnotations() {
         return typeAnnotations;
     }
@@ -99,8 +104,79 @@ public final class AnnotatedMethodImpl implements AnnotatedMethod {
     }
 
     @Override
-    public List<Annotation> getAnnotations() {
-        return methodAnnotations;
+    public boolean contains(Class<?> annotationClass) {
+        return containsAnnotation(annotationClass)
+                || containsTypeAnnotation(annotationClass)
+                || containsParameterAnnotation(annotationClass)
+                || containsInstructionAnnotation(annotationClass)
+                || containsTryCatchAnnotation(annotationClass)
+                || containsLocalVariableAnnotation(annotationClass);
+    }
+
+    @Override
+    public boolean containsAnnotation(Class<?> annotationClass) {
+        if (!hasAnnotations()) {
+            return false;
+        }
+
+        return this.methodAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
+    public boolean containsTypeAnnotation(Class<?> annotationClass) {
+        if (!hasTypeAnnotations()) {
+            return false;
+        }
+
+        return this.typeAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
+    public boolean containsParameterAnnotation(Class<?> annotationClass) {
+        if (!hasParameterAnnotations()) {
+            return false;
+        }
+
+        return this.parameterAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
+    public boolean containsInstructionAnnotation(Class<?> annotationClass) {
+        if (!hasInstructionAnnotations()) {
+            return false;
+        }
+
+        return this.instructionAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
+    public boolean containsTryCatchAnnotation(Class<?> annotationClass) {
+        if (!hasTryCatchAnnotations()) {
+            return false;
+        }
+
+        return this.tryCatchAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
+    }
+
+    @Override
+    public boolean containsLocalVariableAnnotation(Class<?> annotationClass) {
+        if (!hasLocalVariableAnnotations()) {
+            return false;
+        }
+
+        return this.localVariableAnnotations
+                .stream()
+                .anyMatch(annotation -> annotation.is(annotationClass));
     }
 
     public void addAnnotation(ModAnnotation annotation) {
