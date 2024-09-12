@@ -1,20 +1,21 @@
 package infinituum.void_lib.fabric.scanner;
 
+import infinituum.void_lib.VoidLib;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedClass;
 import infinituum.void_lib.fabric.scanner.asm.ModAnnotationClassVisitor;
 import infinituum.void_lib.fabric.scanner.impl.AnnotatedClassImpl;
 import org.objectweb.asm.ClassReader;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-
-import static infinituum.void_lib.fabric.utils.Misc.classPathStringToJavaPath;
 
 public final class ModAnnotationFileTreeVisitor extends SimpleFileVisitor<Path> {
     private final Path basePath;
@@ -59,26 +60,26 @@ public final class ModAnnotationFileTreeVisitor extends SimpleFileVisitor<Path> 
     }
 
     private AnnotatedClass getClassAnnotations(Path filePath) {
-        String relativePath = basePath.relativize(filePath).toString();
-        String javaClassPath = classPathStringToJavaPath(relativePath);
+        String classPath = filePath.toString().replace("\\", "/");
 
-        if (directory == null || javaClassPath.startsWith(directory)) {
-            return getClassAnnotations(javaClassPath);
+        if (directory == null || classPath.startsWith(directory)) {
+            return getClassAnnotations(classPath);
         }
 
         return null;
     }
 
-    private AnnotatedClass getClassAnnotations(String className) {
+    private AnnotatedClass getClassAnnotations(String classPath) {
         ClassReader classReader;
 
-        try {
-            classReader = new ClassReader(className);
-        } catch (IOException ignored) {
+        try (InputStream fileStream = Files.newInputStream(basePath.getFileSystem().getPath(classPath))) {
+            classReader = new ClassReader(fileStream);
+        } catch (IOException exception) {
+            VoidLib.LOGGER.error("Could not instantiate a ClassReader for class '{}': {}", classPath, exception);
             return null;
         }
 
-        AnnotatedClassImpl annotatedModClass = new AnnotatedClassImpl(className);
+        AnnotatedClassImpl annotatedModClass = new AnnotatedClassImpl(classPath);
         ModAnnotationClassVisitor classVisitor = new ModAnnotationClassVisitor(annotatedModClass);
 
         classReader.accept(classVisitor, 0);

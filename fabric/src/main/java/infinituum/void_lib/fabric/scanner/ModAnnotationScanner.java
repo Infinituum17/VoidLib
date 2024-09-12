@@ -25,7 +25,14 @@ public final class ModAnnotationScanner {
         Collection<ModContainer> loadedMods = FabricLoader.getInstance().getAllMods();
         this.excludedMods = Set.of("java", "minecraft", "fabricloader", "mixinextras", "void_lib");
         this.excludedAuthors = Set.of("FabricMC");
+
+        VoidLib.LOGGER.info("Scanning jar files for annotations...");
+
+        long startTime = System.currentTimeMillis();
         this.result = scan(loadedMods);
+        long endTime = System.currentTimeMillis();
+
+        VoidLib.LOGGER.info("Scan completed in {} ms!", (endTime - startTime));
     }
 
     /**
@@ -35,7 +42,11 @@ public final class ModAnnotationScanner {
      */
     public static ModAnnotationScanner init() {
         if (INSTANCE == null) {
-            INSTANCE = new ModAnnotationScanner();
+            synchronized (ModAnnotationScanner.class) {
+                if (INSTANCE == null) {
+                    INSTANCE = new ModAnnotationScanner();
+                }
+            }
         }
 
         return INSTANCE;
@@ -92,8 +103,6 @@ public final class ModAnnotationScanner {
     }
 
     private Set<ScannedFile> scan(Collection<ModContainer> mods) {
-        long startTime = System.currentTimeMillis();
-        VoidLib.LOGGER.info("Scanning jar files for annotations...");
         Set<ScannedFile> result = new HashSet<>();
 
         for (ModContainer mod : mods) {
@@ -109,7 +118,7 @@ public final class ModAnnotationScanner {
                 Set<AnnotatedClass> classes = scanEntrypoints(mod.getRootPaths());
 
                 if (!classes.isEmpty()) {
-                    VoidLib.LOGGER.info("Found mod '{}' with {} annotated classes", modId, classes.size());
+                    VoidLib.LOGGER.info("Found {} annotated classes in mod '{}'", classes.size(), modId);
                     result.add(new ScannedModFile(mod, classes));
                 }
             }
@@ -148,10 +157,6 @@ public final class ModAnnotationScanner {
         } catch (Exception e) {
             VoidLib.LOGGER.warn("Could not read developed mod's classes. Ignore this message if you're running tests");
         }
-
-        long endTime = System.currentTimeMillis();
-
-        VoidLib.LOGGER.info("Scan completed in {} ms!", (endTime - startTime));
 
         return result;
     }
