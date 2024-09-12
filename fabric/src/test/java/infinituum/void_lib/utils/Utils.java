@@ -12,6 +12,7 @@ import java.util.Set;
 
 public class Utils {
     private static final String cwd = System.getProperty("user.dir");
+    private static final Path basePackagePath = Path.of("infinituum").resolve("void_lib");
     private static final boolean debug = true;
 
     public static Set<AnnotatedClass> setupEnv() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
@@ -19,7 +20,11 @@ public class Utils {
         scanAnnotations.setAccessible(true);
 
         Path testingPath = Path.of(cwd).resolve("build/classes/java/test");
-        ModAnnotationFileTreeVisitor visitor = new ModAnnotationFileTreeVisitor(testingPath, "infinituum.void_lib.examples.annotated_classes");
+        ModAnnotationFileTreeVisitor visitor = new ModAnnotationFileTreeVisitor(
+                testingPath,
+                testingPath.resolve(basePackagePath)
+                        .resolve("examples/annotated_classes")
+                        .toString());
 
         Set<AnnotatedClass> annotatedClasses = (Set<AnnotatedClass>) scanAnnotations.invoke(ModAnnotationScanner.init(), visitor);
 

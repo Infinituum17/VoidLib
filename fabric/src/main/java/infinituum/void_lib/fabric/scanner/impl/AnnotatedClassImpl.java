@@ -7,6 +7,8 @@ import infinituum.void_lib.fabric.scanner.api.AnnotatedField;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedMethod;
 import infinituum.void_lib.fabric.scanner.api.Annotation;
 
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -19,13 +21,19 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
     private final String className;
     private final Class<?> clazz;
 
-    public AnnotatedClassImpl(String className) {
+    public AnnotatedClassImpl(Path filePath) {
         this.classAnnotations = new ArrayList<>();
         this.annotatedFields = new HashSet<>();
         this.annotatedMethods = new HashSet<>();
-        this.className = className;
+        this.className = filePathToJavaPath(filePath);
 
         this.clazz = UnsafeLoader.loadClass(className, ModAnnotationScanner.class.getClassLoader());
+    }
+
+    private String filePathToJavaPath(Path path) {
+        FileSystem fileSystem = path.getFileSystem();
+
+        return path.toString().replace(".class", "").replace(fileSystem.getSeparator(), ".");
     }
 
     public void add(Annotation annotation) {

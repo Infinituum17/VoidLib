@@ -60,34 +60,26 @@ public final class ModAnnotationFileTreeVisitor extends SimpleFileVisitor<Path> 
     }
 
     private AnnotatedClass getClassAnnotations(Path filePath) {
-        String classPath = filePath.toString().replace("\\", "/");
+        if (directory == null || filePath.startsWith(directory)) {
+            ClassReader classReader;
 
-        if (directory == null || classPath.startsWith(directory)) {
-            return getClassAnnotations(classPath);
-        }
+            try (InputStream fileStream = Files.newInputStream(filePath)) {
+                classReader = new ClassReader(fileStream);
+            } catch (IOException exception) {
+                VoidLib.LOGGER.error("Could not instantiate a ClassReader for class '{}': {}", filePath.getFileName(), exception);
+                return null;
+            }
 
-        return null;
-    }
+            AnnotatedClassImpl annotatedModClass = new AnnotatedClassImpl(basePath.relativize(filePath));
+            ModAnnotationClassVisitor classVisitor = new ModAnnotationClassVisitor(annotatedModClass);
 
-    private AnnotatedClass getClassAnnotations(String classPath) {
-        ClassReader classReader;
+            classReader.accept(classVisitor, 0);
 
-        try (InputStream fileStream = Files.newInputStream(basePath.getFileSystem().getPath(classPath))) {
-            classReader = new ClassReader(fileStream);
-        } catch (IOException exception) {
-            VoidLib.LOGGER.error("Could not instantiate a ClassReader for class '{}': {}", classPath, exception);
-            return null;
-        }
-
-        AnnotatedClassImpl annotatedModClass = new AnnotatedClassImpl(classPath);
-        ModAnnotationClassVisitor classVisitor = new ModAnnotationClassVisitor(annotatedModClass);
-
-        classReader.accept(classVisitor, 0);
-
-        if (!annotatedModClass.getAnnotations().isEmpty()
-                || !annotatedModClass.getAnnotatedFields().isEmpty()
-                || !annotatedModClass.getAnnotatedMethods().isEmpty()) {
-            return annotatedModClass;
+            if (!annotatedModClass.getAnnotations().isEmpty()
+                    || !annotatedModClass.getAnnotatedFields().isEmpty()
+                    || !annotatedModClass.getAnnotatedMethods().isEmpty()) {
+                return annotatedModClass;
+            }
         }
 
         return null;
