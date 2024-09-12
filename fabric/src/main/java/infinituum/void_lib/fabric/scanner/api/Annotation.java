@@ -11,11 +11,11 @@ import java.util.Map;
  */
 public interface Annotation {
     /**
-     * Gets the current {@link Annotation}'s name
+     * Gets the current {@link Annotation}'s class name
      *
      * @return The annotation name
      */
-    String getName();
+    String getClassName();
 
     /**
      * Gets the current {@link Annotation}'s fields
@@ -47,13 +47,6 @@ public interface Annotation {
      */
     @Nullable
     Object getField(String fieldName);
-
-    /**
-     * Gets the current {@link Annotation}'s class
-     *
-     * @return The current {@link Annotation}'s class
-     */
-    Class<?> get();
 
     /**
      * Checks if the current {@link Annotation} class is of the type passed in

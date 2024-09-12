@@ -1,7 +1,5 @@
 package infinituum.void_lib.fabric.scanner.impl;
 
-import infinituum.void_lib.api.utils.UnsafeLoader;
-import infinituum.void_lib.fabric.scanner.ModAnnotationScanner;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedClass;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedField;
 import infinituum.void_lib.fabric.scanner.api.AnnotatedMethod;
@@ -19,15 +17,12 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
     private final Set<AnnotatedField> annotatedFields;
     private final Set<AnnotatedMethod> annotatedMethods;
     private final String className;
-    private final Class<?> clazz;
 
     public AnnotatedClassImpl(Path filePath) {
         this.classAnnotations = new ArrayList<>();
         this.annotatedFields = new HashSet<>();
         this.annotatedMethods = new HashSet<>();
         this.className = filePathToJavaPath(filePath);
-
-        this.clazz = UnsafeLoader.loadClass(className, ModAnnotationScanner.class.getClassLoader());
     }
 
     private String filePathToJavaPath(Path path) {
@@ -76,13 +71,8 @@ public final class AnnotatedClassImpl implements AnnotatedClass {
     }
 
     @Override
-    public Class<?> get() {
-        return clazz;
-    }
-
-    @Override
     public boolean is(Class<?> clazz) {
-        return clazz.equals(this.clazz);
+        return clazz.getName().equals(className);
     }
 
     @Override

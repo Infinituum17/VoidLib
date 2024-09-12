@@ -1,36 +1,27 @@
 package infinituum.void_lib.fabric.scanner.impl;
 
-import infinituum.void_lib.api.utils.UnsafeLoader;
-import infinituum.void_lib.fabric.scanner.ModAnnotationScanner;
 import infinituum.void_lib.fabric.scanner.api.Annotation;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class ModAnnotation implements Annotation {
-    private final String name;
+    private final String className;
     private final Map<String, Object> fields;
-    private final Class<?> clazz;
 
-    public ModAnnotation(String name) {
-        this.name = name;
+    public ModAnnotation(String className) {
+        this.className = className;
         this.fields = new HashMap<>();
-        this.clazz = UnsafeLoader.loadClass(name, ModAnnotationScanner.class.getClassLoader());
     }
 
     @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Class<?> get() {
-        return clazz;
+    public String getClassName() {
+        return className;
     }
 
     @Override
     public boolean is(Class<?> clazz) {
-        return clazz.equals(this.clazz);
+        return clazz.getName().equals(className);
     }
 
     @Override
@@ -61,7 +52,7 @@ public class ModAnnotation implements Annotation {
     public String toString() {
         StringBuilder result = new StringBuilder();
 
-        result.append("Name: ").append(name).append("\n");
+        result.append("Name: ").append(className).append("\n");
 
         if (hasFields()) {
             result.append("Fields: \n");

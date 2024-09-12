@@ -25,13 +25,6 @@ public interface AnnotatedClass extends AnnotatedElement {
     Set<AnnotatedMethod> getAnnotatedMethods();
 
     /**
-     * Gets the class corresponding to the {@link AnnotatedClass}
-     *
-     * @return The class corresponding to the {@link AnnotatedClass}
-     */
-    Class<?> get();
-
-    /**
      * Utility method to check if the current {@link AnnotatedClass} is of the type passed in
      *
      * @param clazz The class type to check

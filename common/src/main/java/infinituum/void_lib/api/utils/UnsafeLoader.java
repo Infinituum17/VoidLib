@@ -28,15 +28,23 @@ public final class UnsafeLoader {
     public static <T> Class<T> loadClass(String className) {
         try {
             return (Class<T>) Class.forName(className);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             return null;
         }
     }
 
-    public static <T> Class<T> loadClass(String className, ClassLoader classLoader) {
+    public static <T> Class<T> loadClassNoInit(String className) {
+        try {
+            return (Class<T>) Class.forName(className, false, null);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static <T> Class<T> loadClassNoInit(String className, ClassLoader classLoader) {
         try {
             return (Class<T>) Class.forName(className, false, classLoader);
-        } catch (ClassNotFoundException e) {
+        } catch (Exception e) {
             return null;
         }
     }
