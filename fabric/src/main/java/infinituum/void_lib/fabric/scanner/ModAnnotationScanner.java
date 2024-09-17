@@ -153,7 +153,7 @@ public final class ModAnnotationScanner {
                             result.add(new ScannedModFile(new DevModContainer(rootPaths), classes));
                         }
                     } catch (Exception e) {
-                        VoidLib.LOGGER.warn("Could not read 'build/main/java' directory in development environment. Searched path: {}", developmentEntrypoint);
+                        VoidLib.LOGGER.warn("Could not read 'build/classes/java/main' directory in development environment. Searched path: {}", developmentEntrypoint);
                     }
                 } catch (Exception e) {
                     VoidLib.LOGGER.warn("Could not determine development entrypoint (should be 'build/main/java')");
