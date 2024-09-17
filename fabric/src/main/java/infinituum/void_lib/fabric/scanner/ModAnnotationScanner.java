@@ -131,13 +131,18 @@ public final class ModAnnotationScanner {
         try {
             if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
                 try {
-                    Path developmentEntrypoint = FabricLoader.getInstance()
-                            .getGameDir()
-                            .getParent()
+                    Path baseDir = FabricLoader.getInstance().getGameDir();
+
+                    if (!baseDir.isAbsolute()) {
+                        baseDir = baseDir.toAbsolutePath().getParent();
+                    }
+
+                    Path developmentEntrypoint = baseDir.getParent()
                             .resolve("build")
                             .resolve("classes")
                             .resolve("java")
                             .resolve("main");
+
                     try {
                         List<Path> rootPaths = List.of(developmentEntrypoint);
                         Set<AnnotatedClass> classes = scanEntrypoints(rootPaths);
