@@ -8,6 +8,6 @@ public final class VoidLib {
     public static final Logger LOGGER = LoggerFactory.getLogger("Void Lib");
 
     public static void init() {
-        LOGGER.info("Starting Void Lib...");
+        LOGGER.info("Void Lib successfully started!");
     }
 }
