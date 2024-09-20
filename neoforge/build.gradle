@@ -32,10 +32,20 @@ dependencies {
 }
 
 processResources {
-    inputs.property 'version', project.version
+    String version = rootProject.neoforge_version;
+    var base_version = version.substring(0, version.lastIndexOf('.'))
+
+    var rep_properties = [
+            "version"              : rootProject.version,
+            "loader_version"       : rootProject.neoforge_loader_version,
+            "neoforge_base_version": base_version,
+            "minecraft_version"    : rootProject.minecraft_version
+    ]
+
+    inputs.properties rep_properties
 
     filesMatching('META-INF/neoforge.mods.toml') {
-        expand version: project.version
+        expand rep_properties
     }
 }
 
