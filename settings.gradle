@@ -11,4 +11,4 @@ rootProject.name = 'void_lib'
 
 include 'common'
 include 'fabric'
-include 'forge'
+include 'neoforge'
