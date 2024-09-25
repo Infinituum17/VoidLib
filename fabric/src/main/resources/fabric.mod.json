@@ -10,7 +10,7 @@
     "contact": {
         "sources": "https://github.com/Infinituum17/VoidLib"
     },
-    "license": "MIT",
+    "license": "Infinituum License",
     "icon": "assets/void_lib/icon.png",
     "environment": "*",
     "entrypoints": {
