@@ -21,6 +21,9 @@
             "infinituum.void_lib.fabric.VoidLibFabric"
         ]
     },
+    "mixins": [
+        "void_lib-common.mixins.json"
+    ],
     "depends": {
         "fabricloader": ">=${fabric_loader_version}",
         "minecraft": "~${minecraft_version}",

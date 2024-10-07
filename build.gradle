@@ -127,6 +127,13 @@ subprojects {
 
                 mainPublication remapJar
 
+                relations {
+                    depends {
+                        curseforge = "architectury-api"
+                        modrinth = "architectury-api"
+                    }
+                }
+
                 var curseforgeToken = System.getenv("CURSEFORGE_TOKEN")
                 if (curseforgeToken != null) {
                     curseforge {
