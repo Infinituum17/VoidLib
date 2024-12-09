@@ -64,7 +64,16 @@ subprojects {
     }
 
     tasks.register("checkIntegrity") {
-        if (project.name == "common") {
+        boolean isTesting = false
+
+        for (String taskName : gradle.startParameter.taskNames) {
+            if (taskName == "test") {
+                isTesting = true
+            }
+        }
+
+        if (project.name == "common" && !isTesting) {
+            print("Running integrity check...")
             if (!rootProject.hasProperty("has_generation") || rootProject.has_generation.toBoolean()) {
                 URI uri = Paths.get(projectDir.toString(), "src", "main", "generated").toUri()
                 File generatedDirFile = new File(uri)
