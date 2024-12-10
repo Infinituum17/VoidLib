@@ -125,6 +125,7 @@ subprojects {
                 displayName = "Void Lib ${project.minecraft_version}-${project.name} - ${project.mod_version}"
                 gameVersions = [project.minecraft_version]
                 gameLoaders = [project.name]
+                releaseType = "beta"
 
                 def clog = new File(project.getRootDir(), "changelog.md")
 
