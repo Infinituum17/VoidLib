@@ -81,8 +81,8 @@ publishing {
                 }
                 licenses {
                     license {
-                        name = "MIT"
-                        url = "https://spdx.org/licenses/MIT.html"
+                        name = "Infinituum's License"
+                        url = "https://github.com/Infinituum17/VoidLib/blob/main/LICENSE.md"
                     }
                 }
                 developers {
